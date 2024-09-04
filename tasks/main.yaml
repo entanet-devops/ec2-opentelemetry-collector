@@ -1,6 +1,6 @@
 - name: Create otel user for running the OpenTelemetry Collector
   ansible.builtin.user:
-    name: {{ otel_user }}
+    name: "{{ otel_user }}"
     state: present
     shell: /usr/sbin/nologin
     createhome: no
@@ -25,14 +25,13 @@
 - name: Configure systemd configuration
   template:
     src: otelcol-contrib.service.j2
-    dest: "{{ otel_service_path }}
+    dest: "{{ otel_service_path }}"
     mode: 0644
-  notify: restart supervisor
 
 - name: Copy the OpenTel configuration file
   ansible.builtin.template:
     src: opentel-config.yaml.j2
-    dest: /etc/{{ otel_service_name }}/opentel-config.yaml
+    dest: /etc/{{ otel_service_name }}/opentel.yaml
     owner: otel
     group: otel
     mode: '0644'
