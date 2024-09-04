@@ -2,6 +2,11 @@
 {{ opentel_config_override }}
 {% else %}
 receivers:
+  hostmetrics:
+    collection_interval: 60s
+    scrapers:
+      cpu:
+      memory:
   filelog:
     include:
       - /apps/*/storage/logs/laravel.log
@@ -22,6 +27,13 @@ service:
     logs:
       receivers:
         - filelog
+      processors:
+        - resourcedetection
+      exporters:
+        - file
+    metrics:
+      receivers:
+        - hostmetrics
       processors:
         - resourcedetection
       exporters:

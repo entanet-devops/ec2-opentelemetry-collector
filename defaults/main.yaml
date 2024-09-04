@@ -1,6 +1,7 @@
 otel_log_level: info  # Default log level is set to 'info'
 
 otel_user: "otel"
+otel_group: "otel"
 
 otel_config_path: "/etc/otelcol-contrib/opentel.yaml"
 

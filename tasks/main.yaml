@@ -1,3 +1,8 @@
+- name: Ensure otel group exists
+  ansible.builtin.group:
+    name: "{{ otel_group }}"
+    state: present
+
 - name: Create otel user for running the OpenTelemetry Collector
   ansible.builtin.user:
     name: "{{ otel_user }}"
@@ -5,7 +10,15 @@
     shell: /usr/sbin/nologin
     createhome: no
     system: yes
-    groups: adm, systemd-journal
+    groups: adm,systemd-journal,www-data,"{{ otel_group }}"
+
+- name: Ensure otelcol log directory exists
+  ansible.builtin.file:
+    path: /var/log/otelcol
+    state: directory
+    owner: otel
+    group: otel
+    mode: '0755'
 
 - name: Download OpenTelemetry deb
   get_url:
@@ -36,8 +49,8 @@
     group: otel
     mode: '0644'
 
-- name: Restart OpenTel Collector service
+- name: Restart service to pick up config
   ansible.builtin.systemd:
-    name: otelcol-contrib
     state: restarted
-    enabled: yes
+    daemon_reload: yes
+    name: otelcol-contrib.service
