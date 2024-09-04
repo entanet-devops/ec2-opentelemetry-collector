@@ -1,0 +1,51 @@
+otel_log_level: info  # Default log level is set to 'info'
+
+otel_user: "otel"
+
+otel_config_path: "/etc/otelcol-contrib/opentel.yaml"
+
+otel_service_name: "otelcol-contrib"
+
+otel_service_path: "/etc/systemd/system/{{ otel_service_name }}.service"
+
+otel_exec_path: "/usr/bin/otelcol-contrib"
+
+otel_log_path: "/var/log/otelcol/collector.log"
+
+opentel_version: "v0.108.0"
+
+opentel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ opentel_version}}/otelcol-contrib_0.108.0_linux_amd64.deb"
+
+opentel_config_override: ""
+
+#specify override config in var files
+#opentel_config_override: |
+ #        receivers:
+ #          filelog:
+ #            include:
+ #              - /custom/log/path.log
+ #            start_at: end
+ #            operators:
+ #              - type: regex_parser
+ #                regex: '^\[(?P<time>[^\]]+)\] (?P<level>[^:]+): (?P<message>.*)$'
+ #                timestamp:
+ #                  parse_from: time
+ #                  layout_type: gotime
+ #                  layout: "2006-01-02 15:04:05"
+ #                severity:
+ #                  parse_from: level
+ #                attributes:
+ #                  - action: extract
+ #                    key: log.file
+ #                    from: attributes
+ #                    as: log
+ #        processors:
+ #          resourcedetection:
+ #            detectors: [ec2]
+ #        exporters:
+ #          logging:
+ #            loglevel: debug
+ #            encoding: json
+ #            output_paths:
+ #              - /var/log/custom-collector.log
+

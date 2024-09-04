@@ -1,0 +1,14 @@
+[Unit]
+Description=OpenTelemetry Collector Contrib
+After=network.target
+
+[Service]
+ExecStart={{ otel_exec_path }} --config=file:{{ otel_config_path }}
+StandardOutput=file:{{ otel_log_path }}
+StandardError=file:{{ otel_log_path }}
+Restart=always
+RestartSec=10
+User={{ otel_user }}
+
+[Install]
+WantedBy=multi-user.target

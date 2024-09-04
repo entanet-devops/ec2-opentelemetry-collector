@@ -1,0 +1,44 @@
+- name: Create otel user for running the OpenTelemetry Collector
+  ansible.builtin.user:
+    name: {{ otel_user }}
+    state: present
+    shell: /usr/sbin/nologin
+    createhome: no
+    system: yes
+    groups: adm, systemd-journal
+
+- name: Download OpenTelemetry deb
+  get_url:
+    url: "{{ opentel_url }}"
+    dest: /tmp/otelcol-contrib_linux_arm64.deb
+    mode: '0755'
+
+- name: Install OpenTel package
+  ansible.builtin.apt:
+    deb: /tmp/otelcol-contrib_linux_arm64.deb
+
+- name: Remove Otel installation files
+    ansible.builtin.file:
+      path: /tmp/otelcol-contrib_linux_arm64.deb
+      state: absent
+
+- name: Configure systemd configuration
+  template:
+    src: otelcol-contrib.service.j2
+    dest: "{{ otel_service_path }}
+    mode: 0644
+  notify: restart supervisor
+
+- name: Copy the OpenTel configuration file
+  ansible.builtin.template:
+    src: opentel-config.yaml.j2
+    dest: /etc/{{ otel_service_name }}/opentel-config.yaml
+    owner: otel
+    group: otel
+    mode: '0644'
+
+- name: Restart OpenTel Collector service
+  ansible.builtin.systemd:
+    name: otelcol-contrib
+    state: restarted
+    enabled: yes
