@@ -18,9 +18,9 @@
     deb: /tmp/otelcol-contrib_linux_arm64.deb
 
 - name: Remove Otel installation files
-    ansible.builtin.file:
-      path: /tmp/otelcol-contrib_linux_arm64.deb
-      state: absent
+  ansible.builtin.file:
+    path: /tmp/otelcol-contrib_linux_arm64.deb
+    state: absent
 
 - name: Configure systemd configuration
   template:
