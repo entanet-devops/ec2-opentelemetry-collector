@@ -1,2 +1,5 @@
 - name: Install OpenTelemetry Collector
   include_tasks: otel-collector.yaml
+
+- name: Install Node Exporter
+  include_tasks: node-exporter.yaml

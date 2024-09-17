@@ -1,0 +1,41 @@
+- name: Ensure node exporter group exists
+  ansible.builtin.group:
+    name: "{{ exporter_group }}"
+    state: present
+
+- name: Create node exporter user for running node exporter
+  ansible.builtin.user:
+    name: "{{ exporter_user }}"
+    state: present
+    shell: /usr/sbin/nologin
+    createhome: no
+    system: yes
+    groups: {{ exporter_group }}
+
+- name: Download Node Exporter
+  get_url:
+    url: "{{ exporter_url }}"
+    dest: "/tmp/{{ exporter_url | basename }}"
+    mode: '0755'
+
+- name: Unpack Node_Exporter
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ exporter_url | basename }}
+    dest: /tmp/
+
+- name: Copy Node_Exporter to bin
+  ansible.builtin.copy:
+    src: "/tmp/{{ exporter_url | basename | regex_replace('^.tar.gz', '') }}/node_exporter
+    dest: /usr/local/bin
+    owner: exporter
+    group: exporter
+    mode: '0755'
+
+- name: Remove Node_exporter installation files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/tmp/{{ exporter_url | basename }}"
+    - "/tmp/{{ exporter_url | basename | regex_replace('^.tar.gz', '') }}"
+

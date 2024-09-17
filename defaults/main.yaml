@@ -49,4 +49,9 @@ otel_config_override: ""
  #            encoding: json
  #            output_paths:
  #              - /var/log/custom-collector.log
+exporter_user: "exporter"
+exporter_group: "exporter"
 
+
+exporter_version: "v1.8.2"
+exporter_url: "https://github.com/prometheus/node_exporter/releases/download/{{ exporter_version }}/node_exporter-{{ exporter_version | regex_replace('^v', '') }}.linux-amd64.tar.gz"
