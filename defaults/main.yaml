@@ -13,11 +13,11 @@ otel_exec_path: "/usr/bin/otelcol-contrib"
 
 otel_log_path: "/var/log/otelcol/collector.log"
 
-opentel_version: "v0.108.0"
+otel_version: "v0.108.0"
 
-opentel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ opentel_version}}/otelcol-contrib_0.108.0_linux_amd64.deb"
+otel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ otel_version }}/otelcol-contrib_{{ otel_version | regex_replace('^v', '') }}_linux_amd64.deb"
 
-opentel_config_override: ""
+otel_config_override: ""
 
 #specify override config in var files
 #opentel_config_override: |
