@@ -1,37 +1,37 @@
-- name: Ensure node exporter group exists
+- name: Ensure node_exporter group exists
   ansible.builtin.group:
     name: "{{ exporter_group }}"
     state: present
 
-- name: Create node exporter user for running node exporter
+- name: Create node_exporter user
   ansible.builtin.user:
     name: "{{ exporter_user }}"
     state: present
     shell: /usr/sbin/nologin
     createhome: no
     system: yes
-    groups: {{ exporter_group }}
+    groups: "{{ exporter_group }}"
 
-- name: Download Node Exporter
+- name: Download node_exporter
   get_url:
     url: "{{ exporter_url }}"
     dest: "/tmp/{{ exporter_url | basename }}"
     mode: '0755'
 
-- name: Unpack Node_Exporter
+- name: Unpack node_exporter
   ansible.builtin.unarchive:
-    src: "/tmp/{{ exporter_url | basename }}
+    src: "/tmp/{{ exporter_url | basename }}"
     dest: /tmp/
 
-- name: Copy Node_Exporter to bin
+- name: Copy node_exporter to bin
   ansible.builtin.copy:
-    src: "/tmp/{{ exporter_url | basename | regex_replace('^.tar.gz', '') }}/node_exporter
+    src: "/tmp/{{ exporter_url | basename | regex_replace('\\.tar\\.gz$', '') }}/node_exporter"
     dest: /usr/local/bin
     owner: exporter
     group: exporter
     mode: '0755'
 
-- name: Remove Node_exporter installation files
+- name: Remove node_exporter installation files
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
@@ -45,7 +45,7 @@
     dest: "/etc/systemd/system/node_exporter.service"
     mode: 0644
 
-- name: Restart service to pick up config
+- name: Restart node_exporter service
   ansible.builtin.systemd:
     enabled: true
     state: restarted
