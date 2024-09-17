@@ -37,7 +37,7 @@
     state: absent
   loop:
     - "/tmp/{{ exporter_url | basename }}"
-    - "/tmp/{{ exporter_url | basename | regex_replace('^.tar.gz', '') }}"
+    - "/tmp/{{ exporter_url | basename | regex_replace('\\.tar\\.gz$', '') }}"
 
 - name: Configure node_exporter systemd configuration
   template:
