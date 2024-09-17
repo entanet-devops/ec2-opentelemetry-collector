@@ -51,6 +51,7 @@
 
 - name: Restart service to pick up config
   ansible.builtin.systemd:
+    enabled: true
     state: restarted
     daemon_reload: yes
     name: otelcol-contrib.service
