@@ -22,7 +22,7 @@
 
 - name: Download OpenTelemetry deb
   get_url:
-    url: "{{ opentel_url }}"
+    url: "{{ otel_url }}"
     dest: "/tmp/{{ otel_url | basename }}"
     mode: '0755'
 
