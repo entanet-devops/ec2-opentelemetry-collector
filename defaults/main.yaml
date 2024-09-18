@@ -1,4 +1,4 @@
-otel_log_level: info  # Default log level is set to 'info'
+otel_debug_level: normal
 
 otel_user: "otel"
 otel_group: "otel"
@@ -17,42 +17,16 @@ otel_version: "v0.108.0"
 
 otel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ otel_version }}/otelcol-contrib_{{ otel_version | regex_replace('^v', '') }}_linux_amd64.deb"
 
+monitoring_ssm_path: "/devops/production/"
+monitoring_endpoint: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_endpoint') }}"
+monitoring_username: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_username') }}"
+monitoring_password: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_password') }}"
+
 otel_config_override: ""
 
-#specify override config in var files
-#opentel_config_override: |
- #        receivers:
- #          filelog:
- #            include:
- #              - /custom/log/path.log
- #            start_at: end
- #            operators:
- #              - type: regex_parser
- #                regex: '^\[(?P<time>[^\]]+)\] (?P<level>[^:]+): (?P<message>.*)$'
- #                timestamp:
- #                  parse_from: time
- #                  layout_type: gotime
- #                  layout: "2006-01-02 15:04:05"
- #                severity:
- #                  parse_from: level
- #                attributes:
- #                  - action: extract
- #                    key: log.file
- #                    from: attributes
- #                    as: log
- #        processors:
- #          resourcedetection:
- #            detectors: [ec2]
- #        exporters:
- #          logging:
- #            loglevel: debug
- #            encoding: json
- #            output_paths:
- #              - /var/log/custom-collector.log
+
 exporter_user: "exporter"
 exporter_group: "exporter"
-
-
 exporter_version: "v1.8.2"
 exporter_url: "https://github.com/prometheus/node_exporter/releases/download/{{ exporter_version }}/node_exporter-{{ exporter_version | regex_replace('^v', '') }}.linux-amd64.tar.gz"
 exporter_port: "9100"

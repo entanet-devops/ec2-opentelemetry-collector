@@ -10,7 +10,7 @@
     shell: /usr/sbin/nologin
     createhome: no
     system: yes
-    groups: www-data,{{ otel_group }}
+    groups: www-data, adm, {{ otel_group }}
 
 - name: Ensure otelcol log directory exists
   ansible.builtin.file:
