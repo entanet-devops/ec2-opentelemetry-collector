@@ -26,8 +26,6 @@ exporters:
   debug:
     verbosity: {{ otel_debug_level }}
   otlphttp:
-    auth:
-      authenticator: basicauth/otlp
     endpoint: {{ monitoring_endpoint }}
     retry_on_failure:
       enabled: true
@@ -39,13 +37,7 @@ exporters:
       num_consumers: 10
       queue_size: 5000
     timeout: 30s
-extensions:
-  basicauth/otlp:
-    client_auth:
-      username: {{ monitoring_username }}
-      password: {{ monitoring_password }}
 service:
-  extensions: [basicauth/otlp]
   pipelines:
     logs:
       receivers:

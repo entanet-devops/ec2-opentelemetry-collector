@@ -19,8 +19,6 @@ otel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/re
 
 monitoring_ssm_path: "/devops/production/"
 monitoring_endpoint: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_endpoint') }}"
-monitoring_username: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_username') }}"
-monitoring_password: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_password') }}"
 
 otel_config_override: ""
 
