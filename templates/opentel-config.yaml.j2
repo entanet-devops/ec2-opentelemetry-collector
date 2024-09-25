@@ -1,12 +1,15 @@
-{% if opentel_config_override %}
-{{ opentel_config_override }}
+{% if otel_config_override %}
+{{ otel_config_override }}
 {% else %}
 receivers:
-  hostmetrics:
-    collection_interval: 60s
-    scrapers:
-      cpu:
-      memory:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'node_exporter'
+          scrape_interval: 15s
+          static_configs:
+            - targets:
+                - "localhost:9100"
   filelog:
     include:
       - /apps/*/storage/logs/laravel.log
@@ -20,8 +23,20 @@ processors:
       tags:
         - ^.*$
 exporters:
-  file:
-    path: /tmp/opentel-output.json
+  debug:
+    verbosity: {{ otel_debug_level }}
+  otlphttp:
+    endpoint: {{ monitoring_endpoint }}
+    retry_on_failure:
+      enabled: true
+      initial_interval: 5s
+      max_interval: 30s
+      max_elapsed_time: 300s
+    sending_queue:
+      enabled: true
+      num_consumers: 10
+      queue_size: 5000
+    timeout: 30s
 service:
   pipelines:
     logs:
@@ -30,12 +45,13 @@ service:
       processors:
         - resourcedetection
       exporters:
-        - file
+        - otlphttp
     metrics:
       receivers:
-        - hostmetrics
+        - prometheus
       processors:
         - resourcedetection
       exporters:
-        - file
+        - otlphttp
+        - debug
 {% endif %}
