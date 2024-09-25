@@ -2,6 +2,10 @@
 {{ otel_config_override }}
 {% else %}
 receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: "localhost:4317"
   prometheus:
     config:
       scrape_configs:
@@ -49,6 +53,14 @@ service:
     metrics:
       receivers:
         - prometheus
+      processors:
+        - resourcedetection
+      exporters:
+        - otlphttp
+        - debug
+    traces:
+      receivers:
+        - otlp
       processors:
         - resourcedetection
       exporters:
