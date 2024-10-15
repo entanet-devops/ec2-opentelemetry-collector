@@ -16,9 +16,10 @@ receivers:
                 - "localhost:9100"
   filelog:
     include:
-      - /apps/*/storage/logs/laravel.log
+      - /apps/*/storage/logs/laravel*.log
       - /var/log/nginx/access.log
       - /var/log/nginx/error.log
+    start_at: beginning
 processors:
   resourcedetection:
     detectors:
