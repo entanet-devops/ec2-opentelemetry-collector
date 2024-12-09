@@ -33,6 +33,10 @@ limit_mib: "500"
 spike_limit_mib: "100"
 check_interval: "1s"
 
+send_batch_size: "1024"
+timeout: "5s"
+send_batch_max_size: "2048"
+
 
 exporter_user: "exporter"
 exporter_group: "exporter"

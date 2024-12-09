@@ -27,6 +27,10 @@ processors:
     ec2:
       tags:
         - ^.*$
+  batch:
+    send_batch_size: {{ send_batch_size }}
+    timeout: {{ timeout }}
+    send_batch_max_size: {{ send_batch_max_size }}
   memory_limiter:
     limit_mib: {{ limit_mib }}
     spike_limit_mib: {{ spike_limit_mib }}
@@ -60,6 +64,7 @@ service:
         - filelog
       processors:
         - memory_limiter
+        - batch
         - resourcedetection
       exporters:
         - otlphttp
@@ -68,6 +73,7 @@ service:
         - prometheus
       processors:
         - memory_limiter
+        - batch
         - resourcedetection
       exporters:
         - otlphttp
@@ -76,6 +82,7 @@ service:
         - otlp
       processors:
         - memory_limiter
+        - batch
         - resourcedetection
       exporters:
         - otlphttp
