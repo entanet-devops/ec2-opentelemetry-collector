@@ -27,6 +27,10 @@ processors:
     ec2:
       tags:
         - ^.*$
+  memory_limiter:
+    limit_mib: {{ limit_mib }}
+    spike_limit_mib: {{ spike_limit_mib }}
+    check_interval: {{ check_interval }}
 exporters:
   debug:
     verbosity: {{ otel_debug_level }}
@@ -55,6 +59,7 @@ service:
       receivers:
         - filelog
       processors:
+        - memory_limiter
         - resourcedetection
       exporters:
         - otlphttp
@@ -62,6 +67,7 @@ service:
       receivers:
         - prometheus
       processors:
+        - memory_limiter
         - resourcedetection
       exporters:
         - otlphttp
@@ -69,6 +75,7 @@ service:
       receivers:
         - otlp
       processors:
+        - memory_limiter
         - resourcedetection
       exporters:
         - otlphttp
