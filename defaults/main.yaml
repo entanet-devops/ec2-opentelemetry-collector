@@ -13,7 +13,7 @@ otel_exec_path: "/usr/bin/otelcol-contrib"
 
 otel_log_path: "/var/log/otelcol/collector.log"
 
-otel_version: "v0.108.0"
+otel_version: "v0.115.0"
 
 otel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ otel_version }}/otelcol-contrib_{{ otel_version | regex_replace('^v', '') }}_linux_amd64.deb"
 
