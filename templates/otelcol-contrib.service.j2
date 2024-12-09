@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 ExecStart={{ otel_exec_path }} --config={{ otel_config_path }}
+Environment={{ otel_go_mem_limit_env }}
 StandardOutput=file:{{ otel_log_path }}
 StandardError=file:{{ otel_log_path }}
 Restart=always
