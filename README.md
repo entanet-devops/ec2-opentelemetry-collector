@@ -72,7 +72,7 @@ This Ansible role installs and configures the OpenTelemetry Collector (`otelcol-
 ---
 
 ## Author Information
-Created by [Your Name/Team Name].  
-For issues, please contact [your email/team contact].  
+Created by [Platform Squad].  
+For issues, please contact [Platform Squad].  
 
 ---
