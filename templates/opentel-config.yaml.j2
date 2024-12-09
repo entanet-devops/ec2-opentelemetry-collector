@@ -30,6 +30,13 @@ processors:
 exporters:
   debug:
     verbosity: {{ otel_debug_level }}
+  file:
+    path: /var/log/otelcol/collector.log
+    rotation:
+      max_megabytes: {{ log_rotate_max_megabytes }}
+      max_days: {{ log_rotate_max_days }}
+      max_backups: {{ log_rotate_max_backups }}
+      localtime: {{ log_rotate_localtime }}
   otlphttp:
     endpoint: {{ monitoring_endpoint }}
     retry_on_failure:

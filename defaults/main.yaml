@@ -22,10 +22,14 @@ monitoring_endpoint: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_end
 
 otel_config_override: ""
 
+log_rotate_max_megabytes: "10" # Rotate after the file reaches 10 MB
+log_rotate_max_days: "5"       # Rotate files older than 5 days
+log_rotate_max_backups: "3"    # Keep a maximum of 3 backup files
+log_rotate_localtime: "true"   # Use local time for timestamps in rotated files
+
 
 exporter_user: "exporter"
 exporter_group: "exporter"
 exporter_version: "v1.8.2"
 exporter_url: "https://github.com/prometheus/node_exporter/releases/download/{{ exporter_version }}/node_exporter-{{ exporter_version | regex_replace('^v', '') }}.linux-amd64.tar.gz"
 exporter_port: "9100"
-
