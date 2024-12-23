@@ -27,9 +27,24 @@ processors:
     ec2:
       tags:
         - ^.*$
+  batch:
+    send_batch_size: {{ send_batch_size }}
+    timeout: {{ timeout }}
+    send_batch_max_size: {{ send_batch_max_size }}
+  memory_limiter:
+    limit_mib: {{ limit_mib }}
+    spike_limit_mib: {{ spike_limit_mib }}
+    check_interval: {{ check_interval }}
 exporters:
   debug:
     verbosity: {{ otel_debug_level }}
+  file:
+    path: /var/log/otelcol/collector.log
+    rotation:
+      max_megabytes: {{ log_rotate_max_megabytes }}
+      max_days: {{ log_rotate_max_days }}
+      max_backups: {{ log_rotate_max_backups }}
+      localtime: {{ log_rotate_localtime }}
   otlphttp:
     endpoint: {{ monitoring_endpoint }}
     retry_on_failure:
@@ -48,6 +63,8 @@ service:
       receivers:
         - filelog
       processors:
+        - memory_limiter
+        - batch
         - resourcedetection
       exporters:
         - otlphttp
@@ -55,6 +72,8 @@ service:
       receivers:
         - prometheus
       processors:
+        - memory_limiter
+        - batch
         - resourcedetection
       exporters:
         - otlphttp
@@ -62,6 +81,8 @@ service:
       receivers:
         - otlp
       processors:
+        - memory_limiter
+        - batch
         - resourcedetection
       exporters:
         - otlphttp

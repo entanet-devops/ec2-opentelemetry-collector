@@ -13,14 +13,29 @@ otel_exec_path: "/usr/bin/otelcol-contrib"
 
 otel_log_path: "/var/log/otelcol/collector.log"
 
-otel_version: "v0.108.0"
+otel_version: "v0.115.1"
 
 otel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ otel_version }}/otelcol-contrib_{{ otel_version | regex_replace('^v', '') }}_linux_amd64.deb"
 
 monitoring_ssm_path: "/devops/production/"
-monitoring_endpoint: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_endpoint', region=aws_region, aws_access_key=aws_access_key, aws_secret_key=aws_secret_key) }}"
+monitoring_endpoint: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_endpoint', region=(aws_region | default('eu-west-2')), aws_access_key=aws_access_key, aws_secret_key=aws_secret_key) }}"
 
 otel_config_override: ""
+
+otel_go_mem_limit_env: '"GOMEMLIMIT=400MiB"'
+
+log_rotate_max_megabytes: "10" # Rotate after the file reaches 10 MB
+log_rotate_max_days: "5"       # Rotate files older than 5 days
+log_rotate_max_backups: "3"    # Keep a maximum of 3 backup files
+log_rotate_localtime: "true"   # Use local time for timestamps in rotated files
+
+limit_mib: "500"
+spike_limit_mib: "100"
+check_interval: "1s"
+
+send_batch_size: "8192"
+timeout: "5s"
+send_batch_max_size: "8192"
 
 
 exporter_user: "exporter"
@@ -28,4 +43,3 @@ exporter_group: "exporter"
 exporter_version: "v1.8.2"
 exporter_url: "https://github.com/prometheus/node_exporter/releases/download/{{ exporter_version }}/node_exporter-{{ exporter_version | regex_replace('^v', '') }}.linux-amd64.tar.gz"
 exporter_port: "9100"
-
