@@ -17,7 +17,7 @@ otel_version: "v0.115.1"
 
 otel_url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/{{ otel_version }}/otelcol-contrib_{{ otel_version | regex_replace('^v', '') }}_linux_amd64.deb"
 
-monitoring_ssm_path: "/devops/production/"
+monitoring_ssm_path: "/devops/{{ project_environment }}"
 monitoring_endpoint: "{{ lookup('aws_ssm', monitoring_ssm_path + 'monitoring_endpoint', region=(aws_region | default('eu-west-2')), aws_access_key=aws_access_key, aws_secret_key=aws_secret_key) }}"
 
 otel_config_override: ""
