@@ -1,3 +1,16 @@
+- name: Lookup SSM parameter for monitoring endpoint
+  ansible.builtin.aws_ssm_parameter_store:
+    name: "/devops/{{ project_environment }}/monitoring_endpoint"
+  register: ssm_param
+
+- name: Set monitoring endpoint based on SSM parameter
+  set_fact:
+    monitoring_endpoint: "{{ ssm_param.parameter.value }}"
+
+- name: Print all vars
+  debug:
+    var: vars
+
 - name: Ensure otel group exists
   ansible.builtin.group:
     name: "{{ otel_group }}"
