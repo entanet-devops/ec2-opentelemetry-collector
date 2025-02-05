@@ -1,3 +1,7 @@
+- name: Set monitoring endpoint based on project_environment variable
+  set_fact:
+    monitoring_endpoint: "{{ lookup('aws_ssm', '/devops/' + project_environment + '/monitoring_endpoint', region=(aws_region | default('eu-west-2')), aws_access_key=aws_access_key, aws_secret_key=aws_secret_key) }}"
+
 - name: Ensure otel group exists
   ansible.builtin.group:
     name: "{{ otel_group }}"
