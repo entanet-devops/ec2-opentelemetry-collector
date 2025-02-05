@@ -1,12 +1,10 @@
-- name: Lookup SSM parameter for monitoring endpoint
-  ansible.builtin.aws_ssm_parameter_store:
-    name: "/devops/{{ project_environment }}/monitoring_endpoint"
-    region: "eu-west-2"
-  register: ssm_param
+- name: Print all vars
+  debug:
+    var: vars
 
-- name: Set monitoring endpoint based on SSM parameter
+- name: Set monitoring endpoint based on project_environment variable
   set_fact:
-    monitoring_endpoint: "{{ ssm_param.parameter.value }}"
+    monitoring_endpoint: lookup('aws_ssm', '/devops/{{ project_environment }}/monitoring_endpoint', region=(aws_region | default('eu-west-2')), aws_access_key=aws_access_key, aws_secret_key=aws_secret_key)
 
 - name: Print all vars
   debug:
